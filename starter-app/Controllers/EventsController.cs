@@ -1,19 +1,50 @@
-﻿using System.Web.Mvc;
+﻿using Microsoft.AspNet.Identity;
+using starter_app.Models;
+using starter_app.ViewModels;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace starter_app.Controllers
 {
     public class EventsController : Controller
     {
-        // GET: Events
-        public ActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public EventsController()
         {
-            return View();
+            _context = new ApplicationDbContext();
         }
 
         //GET: Events/New
+        [Authorize]
         public ActionResult New()
         {
-            return View();
+            var viewModel = new EventFormViewModel
+            {
+                Genres = _context.Genres.ToList(),
+            };
+            return View(viewModel);
+        }
+
+        //POST: Events/Save
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(EventFormViewModel viewModel)
+        {
+            var newEvent = new Event
+            {
+                ArtistId = User.Identity.GetUserId(),
+                DateTime = DateTime.Parse(string.Format("{0} {1}", viewModel.Date, viewModel.Time)),
+                GenreId = viewModel.GenreId,
+                Venue = viewModel.Venue,
+            };
+
+            _context.Events.Add(newEvent);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
