@@ -178,8 +178,18 @@
     <Compile Include="Migrations\202307170238230_InitialModel.designer.cs">
       <DependentUpon>202307170238230_InitialModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307170507116_AddEventAndGenre.cs" />
+    <Compile Include="Migrations\202307170507116_AddEventAndGenre.designer.cs">
+      <DependentUpon>202307170507116_AddEventAndGenre.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307170508245_PopulateGenre.cs" />
+    <Compile Include="Migrations\202307170508245_PopulateGenre.designer.cs">
+      <DependentUpon>202307170508245_PopulateGenre.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -290,6 +300,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202307170238230_InitialModel.resx">
       <DependentUpon>202307170238230_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307170507116_AddEventAndGenre.resx">
+      <DependentUpon>202307170507116_AddEventAndGenre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307170508245_PopulateGenre.resx">
+      <DependentUpon>202307170508245_PopulateGenre.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
