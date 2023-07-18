@@ -10,16 +10,19 @@
     <div class="mb-3">
         @Html.LabelFor(m => m.Venue)
         @Html.TextBoxFor(m => m.Venue, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Venue)
     </div>
 
     <div class="mb-3">
         @Html.LabelFor(m => m.Date)
         @Html.TextBoxFor(m => m.Date, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Date)
     </div>
 
     <div class="mb-3">
         @Html.LabelFor(m => m.Time)
         @Html.TextBoxFor(m => m.Time, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Time)
     </div>
 
     <div class="mb-3">
@@ -28,6 +31,7 @@
             new SelectList(Model.Genres, "Id", "Name"),
             "Select Event Genre",
             new { @class = "form-select" })
+        @Html.ValidationMessageFor(m => m.GenreId)
     </div>
     @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-primary btn-sm">Save</button>

@@ -1,22 +1,28 @@
 ﻿using starter_app.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace starter_app.ViewModels
 {
     public class EventFormViewModel
     {
+        [Required]
         public string Venue { get; set; }
+
+        [Required]
         public string Date { get; set; }
+
+        [Required]
         public string Time { get; set; }
+
         public byte GenreId { get; set; }
+
         public IEnumerable<Genre> Genres { get; set; }
-        public DateTime DateTime
+
+        public DateTime GetDateTime()
         {
-            get
-            {
-                return DateTime.Parse(String.Format("{0} {1}", Date, Time));
-            }
+            return DateTime.Parse(string.Format("{0} {1}", Date, Time));
         }
     }
 }

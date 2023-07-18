@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using starter_app.Models;
 using starter_app.ViewModels;
-using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -33,10 +32,16 @@ namespace starter_app.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Save(EventFormViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                viewModel.Genres = _context.Genres.ToList();
+                return View("New", viewModel);
+            }
+
             var newEvent = new Event
             {
                 ArtistId = User.Identity.GetUserId(),
-                DateTime = DateTime.Parse(string.Format("{0} {1}", viewModel.Date, viewModel.Time)),
+                DateTime = viewModel.GetDateTime(),
                 GenreId = viewModel.GenreId,
                 Venue = viewModel.Venue,
             };
