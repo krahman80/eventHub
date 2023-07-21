@@ -1,16 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using starter_app.Models;
+using System;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace starter_app.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext _context;
+
+        public HomeController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
         public ActionResult Index()
         {
-            return View();
+            var upcomingEvent = _context.Events
+                .Include(e => e.Artist)
+                .Where(e => e.DateTime > DateTime.Now);
+
+            return View(upcomingEvent);
         }
 
         public ActionResult About()
