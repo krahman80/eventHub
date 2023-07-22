@@ -27,6 +27,7 @@ namespace starter_app.Models
 
         public DbSet<Event> Events { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -35,6 +36,17 @@ namespace starter_app.Models
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            // overide cascade on delete between Event and Attendance
+            modelBuilder.Entity<Attendance>()
+                .HasRequired(e => e.Event)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
