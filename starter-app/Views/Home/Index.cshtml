@@ -4,10 +4,33 @@
 }
 
 <main>
-    <ul>
-        @foreach(var item in Model)
-            {
-                <li>@item.DateTime - @item.Artist.Name</li>
-            }
-    </ul>
+    <h2 class="mt-4 mb-3">List of Events</h2>
+    
+        @foreach (var item in Model)
+        {
+            @*<li>@item.DateTime - @item.Artist.Name</li>*@
+        <div class="d-flex align-items-center my-4">
+            <div class="flex-shrink-0 text-center">
+                <div class="mx-4">
+                    <span style="font-size: 20px; font-weight:bold;">@item.DateTime.ToString("dd")</span>
+                    <br />
+                    @item.DateTime.ToString("MMM")
+                    <br />
+                    @item.DateTime.ToString("yyyy")
+                </div>                   
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <div>
+                    <a href="#" class="link-secondary text-decoration-none">
+                        <h3>@item.Artist.Name</h3>
+                    </a>
+                    <p>@item.Genre.Name</p>
+                    <div class="text-sm op-5">
+                        <a href="#" class="btn btn-success btn-sm">Going?</a> 
+                    </div>
+                </div>
+            </div>
+        </div>
+         
+        }
 </main>

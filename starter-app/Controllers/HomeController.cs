@@ -19,6 +19,7 @@ namespace starter_app.Controllers
         {
             var upcomingEvent = _context.Events
                 .Include(e => e.Artist)
+                .Include(e => e.Genre)
                 .Where(e => e.DateTime > DateTime.Now);
 
             return View(upcomingEvent);
