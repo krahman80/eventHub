@@ -26,7 +26,7 @@
                     </a>
                     <p>@item.Genre.Name</p>
                     <div class="text-sm op-5">
-                        <a href="#" class="btn btn-success btn-sm">Going?</a> 
+                        <button data-event-id="@item.Id" class="btn btn-success btn-sm js-toggle-attendance">Going?</button> 
                     </div>
                 </div>
             </div>
@@ -34,3 +34,25 @@
          
         }
 </main>
+
+@section scripts 
+{
+    <script>
+        $(document).ready(function () {
+ 
+            $(".js-toggle-attendance").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/Attendances/Attend", { eventId: button.attr("data-event-id") })
+                    .done(function () {
+                        button.removeClass("btn-default")
+                            .addClass("btn-info")
+                            .text("Going");
+                    }).fail(function () {
+                        alert("something failed!");
+                    });
+            });
+
+        });
+
+    </script>    
+}

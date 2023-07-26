@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using starter_app.Dtos;
 using starter_app.Models;
 using System.Linq;
 using System.Web.Http;
@@ -17,16 +18,16 @@ namespace starter_app.Controllers.Api
 
         // /api/Attendances/Attend
         [HttpPost]
-        public IHttpActionResult Attend([FromBody] int eventId)
+        public IHttpActionResult Attend(AttendanceDto dto)
         {
             var userId = User.Identity.GetUserId();
 
-            if (_context.Attendances.Any(a => a.AttendeeId == userId && a.EventId == eventId))
+            if (_context.Attendances.Any(a => a.AttendeeId == userId && a.EventId == dto.EventId))
                 return BadRequest("the Attendance already exist");
 
             var attendance = new Attendance()
             {
-                EventId = eventId,
+                EventId = dto.EventId,
                 AttendeeId = userId
             };
             _context.Attendances.Add(attendance);
