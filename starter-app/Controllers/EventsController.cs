@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using starter_app.Models;
 using starter_app.ViewModels;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -50,6 +51,27 @@ namespace starter_app.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public ActionResult Attending()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var events = _context.Attendances
+                .Where(e => e.AttendeeId == userId)
+                .Select(e => e.Event)
+                .Include(g => g.Genre)
+                .Include(a => a.Artist)
+                .ToList();
+
+            var viewModel = new EventViewModel
+            {
+                AttendingEvent = events,
+                ShowActions = User.Identity.IsAuthenticated
+            };
+
+            return View(viewModel);
         }
     }
 }
