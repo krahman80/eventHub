@@ -1,4 +1,4 @@
-﻿@model IEnumerable<starter_app.Models.Event>
+﻿@model starter_app.ViewModels.HomeViewModel
 @{
     ViewBag.Title = "Event Page";
 }
@@ -6,7 +6,7 @@
 <main>
     <h2 class="mt-4 mb-3">List of Events</h2>
     
-        @foreach (var item in Model)
+        @foreach (var item in Model.UpcomingEvents)
         {
             @*<li>@item.DateTime - @item.Artist.Name</li>*@
         <div class="d-flex align-items-center my-4">
@@ -26,7 +26,10 @@
                     </a>
                     <p>@item.Genre.Name</p>
                     <div class="text-sm op-5">
-                        <button data-event-id="@item.Id" class="btn btn-success btn-sm js-toggle-attendance">Going?</button> 
+                        @if (Model.ShowActions)
+                        {
+                            <button data-event-id="@item.Id" class="btn btn-success btn-sm js-toggle-attendance">Going?</button>
+                        }
                     </div>
                 </div>
             </div>

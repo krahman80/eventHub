@@ -1,4 +1,5 @@
 ﻿using starter_app.Models;
+using starter_app.ViewModels;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -17,12 +18,19 @@ namespace starter_app.Controllers
 
         public ActionResult Index()
         {
-            var upcomingEvent = _context.Events
+
+            var upcomingEvents = _context.Events
                 .Include(e => e.Artist)
                 .Include(e => e.Genre)
                 .Where(e => e.DateTime > DateTime.Now);
 
-            return View(upcomingEvent);
+            var viewModel = new HomeViewModel
+            {
+                UpcomingEvents = upcomingEvents,
+                ShowActions = User.Identity.IsAuthenticated
+            };
+
+            return View(viewModel);
         }
 
         public ActionResult About()
