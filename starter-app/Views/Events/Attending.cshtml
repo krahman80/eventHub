@@ -5,7 +5,7 @@
 }
 
 <main>
-    <h2 class="mt-4 mb-3">List of Events</h2>
+    <h2 class="mt-4 mb-3">Attending Events</h2>
 
     @foreach (var item in Model.AttendingEvent)
     {
@@ -26,7 +26,7 @@
                     </a>
                     <p>@item.Genre.Name</p>
                     <div class="text-sm">
-                        <span class="badge bg-primary fw-normal">Attending</span>
+                        <button class="btn btn-success btn-sm fw-normal" style="pointer-events:none">Attending</button>
                     </div>
                 </div>
             </div>
