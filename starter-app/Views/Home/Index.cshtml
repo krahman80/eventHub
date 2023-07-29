@@ -8,7 +8,6 @@
     
         @foreach (var item in Model.UpcomingEvents)
         {
-            @*<li>@item.DateTime - @item.Artist.Name</li>*@
         <div class="d-flex align-items-center my-4">
             <div class="flex-shrink-0 text-center">
                 <div class="mx-4">
@@ -21,9 +20,11 @@
             </div>
             <div class="flex-grow-1 ms-3">
                 <div>
-                    <a href="#" class="link-secondary text-decoration-none">
-                        <h3>@item.Artist.Name</h3>
-                    </a>
+                   <div class="d-flex justify-content-start align-items-center">
+                    <h3><a href="#" class="link-secondary text-decoration-none">@item.Artist.Name</a></h3>
+                    <button data-event-id="@item.ArtistId" class="btn btn-link link-primary js-toggle-follow fw-normal text-decoration-none">Follow?</button>
+                    </div>
+                    
                     <p>@item.Genre.Name</p>
                     <div class="text-sm op-5">
                         @if (Model.ShowActions)
@@ -50,6 +51,18 @@
                         button.removeClass("btn-default")
                             .addClass("btn-info")
                             .text("Going");
+                    }).fail(function () {
+                        alert("something failed!");
+                    });
+            });
+
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(e.target);
+                //console.log(button.attr("data-event-id"));
+                $.post("/api/Followings/Follow", { followeeId: button.attr("data-event-id") })
+                    .done(function () {
+                        button.addClass("link-info")
+                            .text("Followed");
                     }).fail(function () {
                         alert("something failed!");
                     });
