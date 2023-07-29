@@ -12,7 +12,8 @@
                     @User.Identity.GetUserName()
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="@Url.Action("Attending","Events")">Event I'am Attending</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Mine","Events")">My Upcoming Events</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Attending","Events")">Events I'am Attending</a></li>
                     <li><a class="dropdown-item" href="#">Following</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>

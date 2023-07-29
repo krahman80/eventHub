@@ -1,0 +1,33 @@
+﻿@model IEnumerable<starter_app.Models.Event>
+@{
+    ViewBag.Title = "Mine";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <h2 class="mt-4 mb-3">My Upcoming Events</h2>
+
+    @foreach (var item in Model)
+    {
+        <div class="d-flex align-items-center my-4">
+            <div class="flex-shrink-0 text-center">
+                <div class="mx-4">
+                    <span class="fs-5 fw-bold">@item.DateTime.ToString("MMM")</span>
+                    <br />
+                    @item.DateTime.ToString("dd")
+                    <br />
+                    @item.DateTime.ToString("yyyy")
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <div>
+                    <a href="#" class="link-secondary text-decoration-none">
+                        <h3 class="text-primary">@item.Venue</h3>
+                    </a>
+                    <p>@item.Genre.Name</p>
+                </div>
+            </div>
+        </div>
+    }
+</main>
+

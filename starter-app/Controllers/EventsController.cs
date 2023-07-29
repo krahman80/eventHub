@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using starter_app.Models;
 using starter_app.ViewModels;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -50,7 +51,7 @@ namespace starter_app.Controllers
             _context.Events.Add(newEvent);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Mine", "Events");
         }
 
         [Authorize]
@@ -72,6 +73,17 @@ namespace starter_app.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [Authorize]
+        public ActionResult Mine()
+        {
+            var userId = User.Identity.GetUserId();
+            var events = _context.Events
+                .Where(e => e.ArtistId == userId && e.DateTime > DateTime.Now)
+                .Include(g => g.Genre).ToList();
+
+            return View(events);
         }
     }
 }
