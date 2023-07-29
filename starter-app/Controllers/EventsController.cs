@@ -24,20 +24,42 @@ namespace starter_app.Controllers
             var viewModel = new EventFormViewModel
             {
                 Genres = _context.Genres.ToList(),
+                Heading = "Add Event"
             };
-            return View(viewModel);
+            return View("EventForm", viewModel);
         }
 
-        //POST: Events/Save
+        //GET: Events/New
+        [Authorize]
+        public ActionResult Edit(int Id)
+        {
+            var userId = User.Identity.GetUserId();
+            var data = _context.Events.Single(e => e.Id == Id && e.ArtistId == userId);
+
+            var viewModel = new EventFormViewModel
+            {
+                Id = Id,
+                Genres = _context.Genres.ToList(),
+                Date = data.DateTime.ToString("d MMM yyyy"),
+                Time = data.DateTime.ToString("HH:mm"),
+                Venue = data.Venue,
+                GenreId = data.GenreId,
+                Heading = "Edit Event"
+            };
+
+            return View("EventForm", viewModel);
+        }
+
+        //POST: Events/Create
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(EventFormViewModel viewModel)
+        public ActionResult Create(EventFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 viewModel.Genres = _context.Genres.ToList();
-                return View("New", viewModel);
+                return View("EventForm", viewModel);
             }
 
             var newEvent = new Event
@@ -49,6 +71,30 @@ namespace starter_app.Controllers
             };
 
             _context.Events.Add(newEvent);
+            _context.SaveChanges();
+
+            return RedirectToAction("Mine", "Events");
+        }
+
+        //POST: Events/Update
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(EventFormViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                viewModel.Genres = _context.Genres.ToList();
+                return View("EventForm", viewModel);
+            }
+
+            var userId = User.Identity.GetUserId();
+
+            var eventInDB = _context.Events.Single(e => e.Id == viewModel.Id && e.ArtistId == userId);
+            eventInDB.Venue = viewModel.Venue;
+            eventInDB.DateTime = viewModel.GetDateTime();
+            eventInDB.GenreId = viewModel.GenreId;
+
             _context.SaveChanges();
 
             return RedirectToAction("Mine", "Events");

@@ -25,6 +25,12 @@
                         <h3 class="text-primary">@item.Venue</h3>
                     </a>
                     <p>@item.Genre.Name</p>
+                    <p>
+                        <small>
+                            <a href="@Url.Action("Edit", "Events", new { id = item.Id})" class="link-success text-decoration-none me-2">Edit</a>
+                            <a href="#" class="link-success text-decoration-none">Delete</a>
+                        </small>
+                    </p>
                 </div>
             </div>
         </div>

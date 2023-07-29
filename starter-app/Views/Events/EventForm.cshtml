@@ -1,0 +1,46 @@
+﻿@model starter_app.ViewModels.EventFormViewModel
+@{
+    ViewBag.Title = Model.Heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <h2 class="mt-4 mb-3">@Model.Heading</h2>
+    @using (Html.BeginForm(Model.Action, "Events"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Venue)
+            @Html.TextBoxFor(m => m.Venue, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Venue)
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Date)
+            @Html.TextBoxFor(m => m.Date, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Date)
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Time)
+            @Html.TextBoxFor(m => m.Time, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Time)
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.GenreId)
+            @Html.DropDownListFor(m => m.GenreId,
+                new SelectList(Model.Genres, "Id", "Name"),
+                "Select Event Genre",
+                new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.GenreId)
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+    }
+</main>
+
+@section scripts 
+{
+    @Scripts.Render("~/bundles/jqueryval") 
+}
