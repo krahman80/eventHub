@@ -22,5 +22,7 @@ namespace starter_app.Models
         [Required]
         [StringLength(255)]
         public string Venue { get; set; }
+
+        public bool isCanceled { get; set; }
     }
 }

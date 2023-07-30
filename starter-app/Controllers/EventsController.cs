@@ -38,7 +38,7 @@ namespace starter_app.Controllers
 
             var viewModel = new EventFormViewModel
             {
-                Id = Id,
+                Id = data.Id,
                 Genres = _context.Genres.ToList(),
                 Date = data.DateTime.ToString("d MMM yyyy"),
                 Time = data.DateTime.ToString("HH:mm"),
