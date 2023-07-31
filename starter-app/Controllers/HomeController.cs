@@ -22,7 +22,7 @@ namespace starter_app.Controllers
             var upcomingEvents = _context.Events
                 .Include(e => e.Artist)
                 .Include(e => e.Genre)
-                .Where(e => e.DateTime > DateTime.Now);
+                .Where(e => e.DateTime > DateTime.Now && !e.isCanceled);
 
             var viewModel = new HomeViewModel
             {
