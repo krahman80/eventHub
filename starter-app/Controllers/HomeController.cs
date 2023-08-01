@@ -16,7 +16,7 @@ namespace starter_app.Controllers
             _context = new ApplicationDbContext();
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string query = null)
         {
 
             var upcomingEvents = _context.Events
@@ -24,13 +24,29 @@ namespace starter_app.Controllers
                 .Include(e => e.Genre)
                 .Where(e => e.DateTime > DateTime.Now && !e.isCanceled);
 
+            if (!String.IsNullOrWhiteSpace(query))
+            {
+                upcomingEvents = upcomingEvents
+                    .Where(e =>
+                    e.Artist.Name.Contains(query) ||
+                    e.Genre.Name.Contains(query) ||
+                    e.Venue.Contains(query));
+            }
+
             var viewModel = new HomeViewModel
             {
                 UpcomingEvents = upcomingEvents,
-                ShowActions = User.Identity.IsAuthenticated
+                ShowActions = User.Identity.IsAuthenticated,
+                SearchTerm = query
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Search(HomeViewModel viewModel)
+        {
+            return RedirectToAction("Index", "home", new { query = viewModel.SearchTerm });
         }
 
         public ActionResult About()

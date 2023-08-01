@@ -7,5 +7,6 @@ namespace starter_app.ViewModels
     {
         public IEnumerable<Event> UpcomingEvents { get; set; }
         public bool ShowActions { get; set; }
+        public string SearchTerm { get; set; }
     }
 }
