@@ -1,4 +1,5 @@
-﻿using starter_app.Models;
+﻿using Microsoft.AspNet.Identity;
+using starter_app.Models;
 using starter_app.ViewModels;
 using System;
 using System.Data.Entity;
@@ -32,12 +33,18 @@ namespace starter_app.Controllers
                     e.Genre.Name.Contains(query) ||
                     e.Venue.Contains(query));
             }
+            var userId = User.Identity.GetUserId();
+            var attendances = _context.Attendances
+                .Where(u => u.AttendeeId == userId && u.Event.DateTime > DateTime.Now)
+                .ToList()
+                .ToLookup(u => u.EventId);
 
             var viewModel = new HomeViewModel
             {
                 UpcomingEvents = upcomingEvents,
                 ShowActions = User.Identity.IsAuthenticated,
-                SearchTerm = query
+                SearchTerm = query,
+                Attendances = attendances
             };
 
             return View(viewModel);
