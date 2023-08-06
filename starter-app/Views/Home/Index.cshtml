@@ -37,20 +37,14 @@
                          <p><span class="text-info fw-bold">@item.Venue</span></p>
                          <p>@item.Genre.Name</p>
                          <div class="text-sm op-5">
-                             @if (Model.ShowActions)
+                             @if (Model.ShowActions && !item.isCanceled)
                              {
-                                 if (Model.Attendances.Contains(item.Id))
-                                 {
-                                     <span class="badge border border-success text-success">You are attending this event</span>
-                                 }
-                                 else
-                                 {
                                      <button data-event-id="@item.Id"
-                                             class="btn btn-primary btn-sm js-toggle-attendance">
-                                         Going?
+                                             class="btn
+                                             @(Model.Attendances.Contains(item.Id) ? "btn-info" : "btn-default")
+                                             btn-primary btn-sm js-toggle-attendance">
+                                         @(Model.Attendances.Contains(item.Id) ? "Going" : "Going?")
                                      </button>
-                                 }
-
                              }
                          </div>
                      </div>
@@ -66,17 +60,33 @@
 {
     <script>
         $(document).ready(function () {
- 
             $(".js-toggle-attendance").click(function (e) {
                 var button = $(e.target);
-                $.post("/api/Attendances/Attend", { eventId: button.attr("data-event-id") })
-                    .done(function () {
-                        button.removeClass("btn-default")
-                            .addClass("btn-info")
-                            .text("Going");
-                    }).fail(function () {
-                        alert("something failed!");
-                    });
+                if (button.hasClass("btn-default")) {
+                    $.post("/api/Attendances/Attend", { eventId: button.attr("data-event-id") })
+                        .done(function () {
+                            button.removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going");
+                        }).fail(function () {
+                            alert("something failed!");
+                        });
+                }
+                else
+                {
+                    $.ajax({
+                        url: "/api/attendances/" + button.attr("data-event-id"),
+                        method: "DELETE"
+                        })
+                        .done(function () {
+                            button.removeClass("btn-info")
+                                .addClass("btn-default")
+                                .text("Going?");
+                        })
+                        .fail(function () {
+                            alert("something failed!");
+                        });
+                }
             });
 
             $(".js-toggle-follow").click(function (e) {

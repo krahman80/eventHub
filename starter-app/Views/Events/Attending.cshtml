@@ -8,7 +8,7 @@
     <h2 class="mt-4 mb-3">Attending Events</h2>
 
     <ul class="list-unstyled">
-        @foreach (var item in Model.AttendingEvent)
+        @foreach (var item in Model.UpcomingEvents)
         {
             <li>
                 <div class="d-flex align-items-center my-4">
@@ -32,7 +32,7 @@
                             </div>
                             <p>@item.Genre.Name</p>
                             <div class="text-sm">
-                                <button class="btn btn-success btn-sm fw-normal" style="pointer-events:none">Attending</button>
+                                <button class="btn btn-info btn-sm fw-normal" style="pointer-events:none">Attending</button>
                             </div>
                         </div>
                     </div>

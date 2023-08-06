@@ -112,10 +112,17 @@ namespace starter_app.Controllers
                 .Include(a => a.Artist)
                 .ToList();
 
+            var attendances = _context.Attendances
+                .Where(u => u.AttendeeId == userId && u.Event.DateTime > DateTime.Now)
+                .ToList()
+                .ToLookup(u => u.EventId);
+
             var viewModel = new EventViewModel
             {
-                AttendingEvent = events,
-                ShowActions = User.Identity.IsAuthenticated
+                UpcomingEvents = events,
+                ShowActions = User.Identity.IsAuthenticated,
+                SearchTerm = "",
+                Attendances = attendances
             };
 
             return View(viewModel);
