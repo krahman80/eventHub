@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using starter_app.Models;
+using starter_app.ViewModels;
 
 namespace starter_app.Controllers
 {
