@@ -50,6 +50,31 @@ namespace starter_app.Controllers
             return View(viewModel);
         }
 
+        public ActionResult Details(int id)
+        {
+            var eventInDB = _context.Events
+                .Include(g => g.Genre)
+                .Include(a => a.Artist)
+                .SingleOrDefault(e => e.Id == id);
+
+            if (eventInDB == null)
+                return HttpNotFound();
+
+            var viewModel = new EventDetailsViewModel()
+            {
+                Event = eventInDB
+            };
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                viewModel.IsAttending = _context.Attendances
+                    .Any(a => a.EventId == id && a.AttendeeId == userId);
+            }
+
+            return View(viewModel);
+        }
+
         [HttpPost]
         public ActionResult Search(HomeViewModel viewModel)
         {

@@ -1,0 +1,18 @@
+﻿@model starter_app.ViewModels.EventDetailsViewModel
+@{
+    ViewBag.Title = "Event Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <h2 class="mt-4 mb-3">@Model.Event.Artist.Name</h2>
+    <p>Performing at <span class="fw-bold">@Model.Event.Venue</span> on <span class="fw-bold">@Model.Event.DateTime.ToString("dd MMM")</span> at <span class="fw-bold">@Model.Event.DateTime.ToString("HH:mm")</span></p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (Model.IsAttending)
+        {
+            <p class="text-primary">You are attending this event!</p>
+        }
+    }
+
+</main>

@@ -182,6 +182,7 @@
     <Compile Include="Controllers\Api\AttendancesController.cs" />
     <Compile Include="Controllers\Api\EventsController.cs" />
     <Compile Include="Controllers\Api\FollowingsController.cs" />
+    <Compile Include="ViewModels\EventDetailsViewModel.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -310,6 +311,7 @@
     <Content Include="Views\Events\EventForm.cshtml" />
     <Content Include="Views\Events\Attending.cshtml" />
     <Content Include="Views\Events\Mine.cshtml" />
+    <Content Include="Views\Home\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
