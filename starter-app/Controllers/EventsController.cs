@@ -1,20 +1,26 @@
 ﻿using Microsoft.AspNet.Identity;
 using starter_app.Models;
+using starter_app.Repositories;
 using starter_app.ViewModels;
 using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
+
 namespace starter_app.Controllers
 {
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly AttendanceRepository _attendanceRepository;
+        private readonly EventRepository _eventRepository;
 
         public EventsController()
         {
             _context = new ApplicationDbContext();
+            _attendanceRepository = new AttendanceRepository(_context);
+            _eventRepository = new EventRepository(_context);
         }
 
         //GET: Events/New
@@ -105,28 +111,19 @@ namespace starter_app.Controllers
         {
             var userId = User.Identity.GetUserId();
 
-            var events = _context.Attendances
-                .Where(e => e.AttendeeId == userId)
-                .Select(e => e.Event)
-                .Include(g => g.Genre)
-                .Include(a => a.Artist)
-                .ToList();
-
-            var attendances = _context.Attendances
-                .Where(u => u.AttendeeId == userId && u.Event.DateTime > DateTime.Now)
-                .ToList()
-                .ToLookup(u => u.EventId);
-
             var viewModel = new EventViewModel
             {
-                UpcomingEvents = events,
+                UpcomingEvents = _eventRepository.GetEventsUserAttending(userId),
                 ShowActions = User.Identity.IsAuthenticated,
-                SearchTerm = "",
-                Attendances = attendances
+                SearchTerm = string.Empty,
+                Attendances = _attendanceRepository.GetFutureAttendance(userId).ToLookup(u => u.EventId)
             };
 
             return View(viewModel);
         }
+
+
+
 
         [Authorize]
         public ActionResult Mine()
