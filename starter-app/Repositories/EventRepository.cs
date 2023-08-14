@@ -23,5 +23,10 @@ namespace starter_app.Repositories
                 .Include(a => a.Artist)
                 .ToList();
         }
+
+        public void Add(Event newEvent)
+        {
+            _context.Events.Add(newEvent);
+        }
     }
 }

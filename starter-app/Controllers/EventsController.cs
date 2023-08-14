@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using starter_app.Models;
+using starter_app.Persistence;
 using starter_app.Repositories;
 using starter_app.ViewModels;
 using System;
@@ -15,12 +16,14 @@ namespace starter_app.Controllers
         private readonly ApplicationDbContext _context;
         private readonly AttendanceRepository _attendanceRepository;
         private readonly EventRepository _eventRepository;
+        private readonly UnitOfWork _unitOfWork;
 
         public EventsController()
         {
             _context = new ApplicationDbContext();
             _attendanceRepository = new AttendanceRepository(_context);
             _eventRepository = new EventRepository(_context);
+            _unitOfWork = new UnitOfWork(_context);
         }
 
         //GET: Events/New
@@ -76,8 +79,8 @@ namespace starter_app.Controllers
                 Venue = viewModel.Venue,
             };
 
-            _context.Events.Add(newEvent);
-            _context.SaveChanges();
+            _eventRepository.Add(newEvent);
+            _unitOfWork.Complete();
 
             return RedirectToAction("Mine", "Events");
         }
@@ -101,7 +104,7 @@ namespace starter_app.Controllers
             eventInDB.DateTime = viewModel.GetDateTime();
             eventInDB.GenreId = viewModel.GenreId;
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return RedirectToAction("Mine", "Events");
         }
@@ -121,9 +124,6 @@ namespace starter_app.Controllers
 
             return View(viewModel);
         }
-
-
-
 
         [Authorize]
         public ActionResult Mine()
