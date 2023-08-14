@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using starter_app.Models;
 using starter_app.Persistence;
-using starter_app.Repositories;
 using starter_app.ViewModels;
 using System;
 using System.Data.Entity;
@@ -14,15 +13,11 @@ namespace starter_app.Controllers
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly AttendanceRepository _attendanceRepository;
-        private readonly EventRepository _eventRepository;
         private readonly UnitOfWork _unitOfWork;
 
         public EventsController()
         {
             _context = new ApplicationDbContext();
-            _attendanceRepository = new AttendanceRepository(_context);
-            _eventRepository = new EventRepository(_context);
             _unitOfWork = new UnitOfWork(_context);
         }
 
@@ -79,7 +74,7 @@ namespace starter_app.Controllers
                 Venue = viewModel.Venue,
             };
 
-            _eventRepository.Add(newEvent);
+            _unitOfWork.Events.Add(newEvent);
             _unitOfWork.Complete();
 
             return RedirectToAction("Mine", "Events");
@@ -116,10 +111,10 @@ namespace starter_app.Controllers
 
             var viewModel = new EventViewModel
             {
-                UpcomingEvents = _eventRepository.GetEventsUserAttending(userId),
+                UpcomingEvents = _unitOfWork.Events.GetEventsUserAttending(userId),
                 ShowActions = User.Identity.IsAuthenticated,
                 SearchTerm = string.Empty,
-                Attendances = _attendanceRepository.GetFutureAttendance(userId).ToLookup(u => u.EventId)
+                Attendances = _unitOfWork.Attendances.GetFutureAttendance(userId).ToLookup(u => u.EventId)
             };
 
             return View(viewModel);
